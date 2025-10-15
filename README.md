@@ -9,8 +9,7 @@ Materi webinar tentang fundamental pengembangan aplikasi web bersama @domainesia
 	Agenda
 	Logistik
 	Outcome
-2. Komponen aplikasi web
-	Beberapa arsitektur aplikasi web
+2. Arsitektur aplikasi web
 		Web Statis
 			HTML
 			CSS
