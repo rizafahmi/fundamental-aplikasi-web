@@ -1,37 +1,69 @@
-# TutorialKit Starter
+# Fundamental Aplikasi Web
 
-👋 Welcome to TutorialKit!
+Materi webinar tentang fundamental pengembangan aplikasi web bersama @domainesia. Materi ini menggunakan TutorialKit.
 
-This README includes everything you need to start writing your tutorial content quickly.
+## Outline Materi
 
-## Project Structure
+1. Pembuka
+	Kenalan
+	Agenda
+	Logistik
+	Outcome
+2. Komponen aplikasi web
+	Beberapa arsitektur aplikasi web
+		Web Statis
+			HTML
+			CSS
+			JavaScript
+		Tradisional (SSR)
+			Frontend
+			Backend
+			Database
+		SPA (CSR)
+			Frontend
+			API/GraphQL/gRPC/Backend
+				Kalo gak mau backend, bisa coba BaaS
+			Database
+		Beberapa arsitektur lainnya
+			Fullstack/Meta framework
+			HTML over the wire
+			https://www.patterns.dev/#patterns
+3. Live Demo
+	Frontend
+		HTML, CSS, JavaScript
+	Backend
+		Node, h3
+	Bonus: Nitro, database
+4. Referensi, diskusi & tanya-jawab
+
+## Struktur Project
 
 ```bash
 .
-├── astro.config.mjs    # TutorialKit uses Astro 🚀 (https://astro.build)
+├── astro.config.mjs    # TutorialKit menggunakan Astro 🚀 (https://astro.build)
 ├── src
 │   ├── ...
 │   ├── content
-│   │   └── tutorial    # Your tutorial content lives here
-│   └── templates       # Your templates (see below for more information)
+│   │   └── tutorial    # Konten tutorial Anda berada di sini
+│   └── templates       # Template Anda (lihat di bawah untuk informasi lebih lanjut)
 ├── public
 │   ├── favicon.svg
-│   └── logo.svg        # Default logo used in top left for your tutorial
+│   └── logo.svg        # Logo default yang digunakan di kiri atas untuk tutorial Anda
 ├── ...
-├── theme.ts            # Customize the theme of the tutorial
-└── uno.config.ts       # UnoCSS config (https://unocss.dev/)
+├── theme.ts            # Kustomisasi tema tutorial
+└── uno.config.ts       # Konfigurasi UnoCSS (https://unocss.dev/)
 ```
 
-## Getting Started
+## Memulai
 
-Make sure you have all dependencies installed and started the dev server:
+Pastikan Anda telah menginstal semua dependensi dan menjalankan dev server:
 
 ```bash
 bun install
 bun run dev
 ```
 
-## UI Structure
+## Struktur UI
 
 ```markdown
 ┌─────────────────────────────────────────────────────┐
@@ -59,91 +91,91 @@ bun run dev
 └───────────────────────────┴─────────────────────────┘
 ```
 
-## Authoring Content
+## Membuat Konten
 
-A tutorial consists of parts, chapters, and lessons. For example:
+Tutorial terdiri dari bagian, bab, dan pelajaran. Contohnya:
 
-- Part 1: Basics of Vite
-  - Chapter 1: Introduction
-    - Lesson 1: Welcome!
-    - Lesson 2: Why Vite?
+- Bagian 1: Dasar-dasar Vite
+  - Bab 1: Pengenalan
+    - Pelajaran 1: Selamat datang!
+    - Pelajaran 2: Mengapa Vite?
     - …
-  - Chapter 2: Your first Vite project
-- Part 2: CLI
+  - Bab 2: Project Vite pertama Anda
+- Bagian 2: CLI
   - …
 
-Your content is organized into lessons, with chapters and parts providing a structure and defining common metadata for these lessons.
+Konten Anda diorganisir ke dalam pelajaran, dengan bab dan bagian menyediakan struktur dan mendefinisikan metadata umum untuk pelajaran-pelajaran tersebut.
 
-Here’s an example of how it would look like in `src/content/tutorial`:
+Berikut adalah contoh bagaimana tampilannya di `src/content/tutorial`:
 
 ```bash
 tutorial
 ├── 1-basics-of-vite
 │   ├── 1-introduction
 │   │   ├── 1-welcome
-│   │   │   ├── content.md    # The content of your lesson
-│   │   │   ├── _files        # Initial set of files
+│   │   │   ├── content.md    # Konten pelajaran Anda
+│   │   │   ├── _files        # Set file awal
 │   │   │   │   └── ...
-│   │   │   └── _solution     # Solution of the lesson
+│   │   │   └── _solution     # Solusi dari pelajaran
 │   │   │       └── ...
 │   │   ├── 2-why-vite
 │   │   │   ├── content.md
 │   │   │   └── _files
 │   │   │       └── ...
-│   │   └── meta.md           # Metadata for the chapter
-│   └── meta.md               # Metadata for the part
+│   │   └── meta.md           # Metadata untuk bab
+│   └── meta.md               # Metadata untuk bagian
 ├── 2-advanced
 │   ├── ...
 │   └── meta.md
-└── meta.md                   # Metadata for the tutorial
+└── meta.md                   # Metadata untuk tutorial
 ```
 
-### Supported Content Formats
+### Format Konten yang Didukung
 
-Content can be either written as Markdown (`.md`) files or using [MDX](https://mdxjs.com/) (`.mdx`). Files have a Front Matter at the top that contains the metadata and everything that comes after is the content of your lesson.
+Konten dapat ditulis sebagai file Markdown (`.md`) atau menggunakan [MDX](https://mdxjs.com/) (`.mdx`). File memiliki Front Matter di bagian atas yang berisi metadata dan semua yang ada setelahnya adalah konten pelajaran Anda.
 
-**Example**
+**Contoh**
 
 ```markdown
 ---
 type: lesson
-title: Welcome!
+title: Selamat datang!
 ---
 
-# Welcome to TutorialKit!
+# Selamat datang di TutorialKit!
 
-In this tutorial we'll walk you through how to setup your environment to
-write your first tutorial 🤩
+Dalam tutorial ini kami akan memandu Anda tentang cara mengatur lingkungan Anda untuk
+menulis tutorial pertama Anda 🤩
 ```
 
-The metadata file (`meta.md`) of parts, chapters, and lessons do not contain any content. It only contains the Front Matter for configuration.
+File metadata (`meta.md`) dari bagian, bab, dan pelajaran tidak berisi konten apapun. File ini hanya berisi Front Matter untuk konfigurasi.
 
 ### Metadata
 
-Here is an overview of the properties that can be used as part of the Front Matter:
+Berikut adalah gambaran umum properti yang dapat digunakan sebagai bagian dari Front Matter:
 
 | Property        | Required | Type                        | Inherited | Description                                                                                                                                           |
 | --------------- | -------- | --------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type            | ✅       | `part \| chapter \| lesson` | ❌        | The type of the metadata.                                                                                                                             |
-| title           | ✅       | `string`                    | ❌        | The title of the part, chapter, or lesson.                                                                                                            |
-| slug            |          | `string`                    | ❌        | Let’s you customize the URL pathname which is `/:partSlug/:chapterSlug/:lessonSlug`.                                                                  |
-| previews        |          | `Preview[]`                 | ✅        | Configure which ports should be used for the previews. If not specified, the lowest port will be used.                                                |
-| autoReload      |          | `boolean`                   | ✅        | Navigating to a lesson that specifies `autoReload` will always reload the preview. This is typically only needed if your server does not support HMR. |
-| prepareCommands |          | `Command[]`                 | ✅        | List of commands to execute sequentially. They are typically used to install dependencies or to run scripts.                                          |
-| mainCommand     |          | `Command`                   | ✅        | The main command to be executed. This command will run after the `prepareCommands`.                                                                   |
+| type            | ✅       | `part \| chapter \| lesson` | ❌        | Tipe dari metadata.                                                                                                                                   |
+| title           | ✅       | `string`                    | ❌        | Judul dari bagian, bab, atau pelajaran.                                                                                                              |
+| slug            |          | `string`                    | ❌        | Memungkinkan Anda menyesuaikan pathname URL yaitu `/:partSlug/:chapterSlug/:lessonSlug`.                                                             |
+| previews        |          | `Preview[]`                 | ✅        | Konfigurasi port mana yang harus digunakan untuk preview. Jika tidak ditentukan, port terendah akan digunakan.                                      |
+| autoReload      |          | `boolean`                   | ✅        | Navigasi ke pelajaran yang menentukan `autoReload` akan selalu memuat ulang preview. Ini biasanya hanya diperlukan jika server Anda tidak mendukung HMR. |
+| prepareCommands |          | `Command[]`                 | ✅        | Daftar perintah yang dijalankan secara berurutan. Biasanya digunakan untuk menginstal dependensi atau menjalankan script.                          |
+| mainCommand     |          | `Command`                   | ✅        | Perintah utama yang akan dijalankan. Perintah ini akan berjalan setelah `prepareCommands`.                                                           |
 
-A `Command` has the following shape:
+`Command` memiliki bentuk sebagai berikut:
 
 ```ts
 string | [command: string, title: string] | { command: string, title: string }
 ```
 
-The `title` is used as part of the boot screen (see [UI Structure](#ui-structure)).
+`title` digunakan sebagai bagian dari boot screen (lihat [Struktur UI](#struktur-ui)).
 
-A `Preview` has the following shape:
+`Preview` memiliki bentuk sebagai berikut:
 
 ```ts
 string | [port: number, title: string] | { port: number, title: string }
 ```
 
-In most cases, metadata is inherited. For example, if you specify a `mainCommand` on a chapter without specifying it on any of its lessons, each lesson will use the `mainCommand` from its respective chapter. This extends to chapter and parts as well.
+Dalam sebagian besar kasus, metadata diwariskan. Misalnya, jika Anda menentukan `mainCommand` pada sebuah bab tanpa menentukannya pada pelajaran-pelajarannya, setiap pelajaran akan menggunakan `mainCommand` dari bab masing-masing. Ini berlaku juga untuk bab dan bagian.
