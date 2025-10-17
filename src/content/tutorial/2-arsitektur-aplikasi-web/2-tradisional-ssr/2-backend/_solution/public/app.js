@@ -1,7 +1,7 @@
 // Form Submission
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", async function (event) {
   event.preventDefault();
-  
+
   save_button.innerHTML = "Menyimpan...";
   save_button.disabled = true;
 
@@ -13,16 +13,14 @@ form.addEventListener("submit", function (event) {
       id: Date.now(),
     };
     console.log(newNote);
-    
+
+    // Save data
+
     // Clear Form
     title.value = "";
     note.value = "";
     category.value = "";
-    
   }
-  
-  setTimeout(function() {
-    save_button.innerHTML = "Simpan";
-    save_button.disabled = false;
-  }, 2500)
+  save_button.innerHTML = "Simpan";
+  save_button.disabled = false;
 });

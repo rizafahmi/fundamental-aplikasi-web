@@ -1,7 +1,7 @@
 import { H3, serve, html } from "h3";
-import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 import { staticFilesHandler } from "./lib/static.js";
 
