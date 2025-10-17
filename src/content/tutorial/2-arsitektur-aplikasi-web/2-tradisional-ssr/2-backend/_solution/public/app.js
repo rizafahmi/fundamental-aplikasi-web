@@ -1,6 +1,6 @@
 // Form Submission
 form.addEventListener("submit", async function (event) {
-  event.preventDefault();
+  // event.preventDefault();
 
   save_button.innerHTML = "Menyimpan...";
   save_button.disabled = true;
@@ -17,9 +17,9 @@ form.addEventListener("submit", async function (event) {
     // Save data
 
     // Clear Form
-    title.value = "";
-    note.value = "";
-    category.value = "";
+    // title.value = "";
+    // note.value = "";
+    // category.value = "";
   }
   save_button.innerHTML = "Simpan";
   save_button.disabled = false;

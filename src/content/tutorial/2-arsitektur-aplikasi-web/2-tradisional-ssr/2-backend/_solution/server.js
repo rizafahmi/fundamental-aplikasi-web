@@ -1,4 +1,4 @@
-import { H3, serve, html } from "h3";
+import { H3, serve, html, readBody } from "h3";
 import { readFile } from "fs/promises";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -15,6 +15,17 @@ app.use("/**", staticFilesHandler);
 
 // Serve the main HTML page
 app.get("/", async (event) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
+
+  return html(event, template);
+});
+
+app.post("/", async (event) => {
+  const data = await readBody(event);
+  console.log(data);
   const template = await readFile(
     join(__dirname, "templates", "index.html"),
     "utf-8",
