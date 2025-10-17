@@ -8,6 +8,8 @@ import { staticFilesHandler } from "./lib/static.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+let NOTES = [];
+
 const app = new H3();
 
 // Serve static files from templates directory
@@ -15,6 +17,7 @@ app.use("/**", staticFilesHandler);
 
 // Serve the main HTML page
 app.get("/", async (event) => {
+  console.log(NOTES);
   const template = await readFile(
     join(__dirname, "templates", "index.html"),
     "utf-8",
@@ -25,13 +28,14 @@ app.get("/", async (event) => {
 
 app.post("/", async (event) => {
   const data = await readBody(event);
-  console.log(data);
-  const template = await readFile(
-    join(__dirname, "templates", "index.html"),
-    "utf-8",
-  );
+  NOTES = NOTES.concat(data);
 
-  return html(event, template);
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/",
+    },
+  });
 });
 
 serve(app, { port: 3000 });
