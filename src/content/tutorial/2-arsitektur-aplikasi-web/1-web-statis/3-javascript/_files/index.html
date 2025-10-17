@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Aplikasi Catatan</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Catatan</h1>
+      <h3>Buat catatan baru</h3>
+      <form id="form">
+        <label for="title"
+          >Judul
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Judul catatan"
+            required
+          />
+        </label>
+        <label for="note"
+          >Catatan
+          <textarea
+            name="note"
+            id="note"
+            cols="30"
+            rows="10"
+            placeholder="Tulis catatan kamu disini..."
+            required
+          ></textarea>
+        </label>
+        <label for="category"
+          >Kategori
+          <select name="category" id="category" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="personal">Pribadi</option>
+            <option value="work">Kerjaan</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </label>
+
+        <button type="submit" id="save_button">Simpan</button>
+      </form>
+    </main>
+    <aside>
+      <h3>Catatan</h3>
+      <div class="notes">
+        <div class="note">
+          <h2 class="note__title">From skeleton crew to lifestyle business</h2>
+          <p class="note__body">
+            Gumroad was no longer the venture-funded, fast-growing startup our
+            investors and employees signed up for. As everyone else found other
+            opportunities, the skeleton crew fizzled from five to one. I was
+            basically alone. I didn't have a team, nor an office. And San
+            Francisco was full of startups raising gobs of money, building
+            amazing teams, and shipping great products. Some of my friends
+            became billionaires. Meanwhile, I was running a "measly" lifestyle
+            business. It wasn't what I wanted to do, but I had to keep the ship
+            from sinking.
+          </p>
+          <div class="note__actions">
+            <button class="note__btn note__view">View Detail</button>
+            <button class="note__btn note__delete">Delete Note</button>
+          </div>
+        </div>
+        <div class="note">
+          <h2 class="note__title">New beginnings</h2>
+          <p class="note__body">
+            Then one day, everything changed. Again. I'm wary about sharing this
+            part of the story, because I don't know if there is anything to
+            learn from it. But it happened, so here it is. One investor joined
+            them. We've bought back a couple more, since then. I keep the rest
+            of the investors up-to-date with a brief email every few months. The
+            future came into focus: I could grow a small team, slowly buy back
+            our investors, and build Gumroad into a meaningful business focused
+            on our creators. We would never become a billion-dollar company, and
+            that started to feel okay. Certainly, the thousands of creators
+            selling on Gumroad wouldn't mind.
+          </p>
+          <div class="note__actions">
+            <button class="note__btn note__view">View Detail</button>
+            <button class="note__btn note__delete">Delete Note</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="app.js"></script>
+    <footer>&copy; 2025 Made with love for Domainesia</footer>
+  </body>
+</html>
