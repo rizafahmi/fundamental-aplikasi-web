@@ -85,6 +85,10 @@ form {
     &:focus {
       background-color: var(--dark);
     }
+    &:disabled {
+      background-color: var(--dark);
+      cursor: not-allowed;
+    }
   }
 }
 
