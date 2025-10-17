@@ -12,18 +12,35 @@ let NOTES = [];
 
 const app = new H3();
 
+function noteComponent({ title, note }) {
+  return `<div class="note">
+    <h2 class="note__title">${title}</h2>
+    <p class="note__body">
+      ${note}
+    </p>
+    <div class="note__actions">
+      <button class="note__btn note__view">View Detail</button>
+      <button class="note__btn note__delete">Delete Note</button>
+    </div>
+  </div>`;
+}
+
 // Serve static files from templates directory
 app.use("/**", staticFilesHandler);
 
 // Serve the main HTML page
 app.get("/", async (event) => {
-  console.log(NOTES);
   const template = await readFile(
     join(__dirname, "templates", "index.html"),
     "utf-8",
   );
 
-  return html(event, template);
+  // Replace placeholders in template
+  const notesHTML = NOTES.map((note) => noteComponent(note)).join("");
+
+  const renderedHTML = template.replace("{{NOTES}}", notesHTML);
+
+  return html(event, renderedHTML);
 });
 
 app.post("/", async (event) => {
