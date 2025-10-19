@@ -1,6 +1,9 @@
 ---
 type: lesson
-title: Informasi Logistik
+title: Logistik
+terminal: false
+editor: false
+previews: false
 ---
 
 # Informasi Logistik Webinar 📝

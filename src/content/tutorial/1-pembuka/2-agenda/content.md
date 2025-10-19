@@ -1,6 +1,9 @@
 ---
 type: lesson
-title: Agenda Webinar
+title: Agenda
+terminal: false
+editor: false
+previews: false
 ---
 
 # Agenda Webinar Fundamental Aplikasi Web 📋

@@ -1,4 +1,3 @@
 ---
-type: chapter
-title: Kenalan
+type: tutorial
 ---
