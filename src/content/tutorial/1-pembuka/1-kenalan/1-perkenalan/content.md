@@ -1,6 +1,9 @@
 ---
 type: lesson
 title: Perkenalan
+terminal: false
+editor: false
+previews: false
 ---
 
 # Selamat Datang di Webinar Fundamental Aplikasi Web! 👋
