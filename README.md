@@ -27,13 +27,7 @@ Materi webinar tentang fundamental pengembangan aplikasi web bersama @domainesia
 			Fullstack/Meta framework
 			HTML over the wire
 			https://www.patterns.dev/#patterns
-3. Live Demo
-	Frontend
-		HTML, CSS, JavaScript
-	Backend
-		Node, h3
-	Bonus: Nitro, database
-4. Referensi, diskusi & tanya-jawab
+3. Referensi, diskusi & tanya-jawab
 
 ## Struktur Project
 
