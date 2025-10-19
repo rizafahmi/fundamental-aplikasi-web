@@ -1,79 +1,73 @@
-// onload
-window.addEventListener("DOMContentLoaded", async function () {
-  console.log("Page loaded");
+const { createApp } = Vue;
 
-  const data = await getNotes();
-  renderNotes(data);
-});
-
-// Form Submission
-form.addEventListener("submit", async function (event) {
-  event.preventDefault();
-
-  save_button.innerHTML = "Menyimpan...";
-  save_button.disabled = true;
-
-  if (title.value !== "" && note.value !== "" && category.value !== "") {
-    const newNote = {
-      title: title.value,
-      note: note.value,
-      category: category.value,
-      id: Date.now(),
+createApp({
+  data() {
+    return {
+      notes: [],
+      form: {
+        title: "",
+        note: "",
+        category: "",
+      },
+      isSaving: false,
     };
-    console.log(newNote);
+  },
 
-    // Save data
-    try {
-      await fetch("/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newNote),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-
-    // Clear Form
-    title.value = "";
-    note.value = "";
-    category.value = "";
-  }
-  save_button.innerHTML = "Simpan";
-  save_button.disabled = false;
-
-  const data = await getNotes();
-  renderNotes(data);
-});
-
-async function getNotes() {
-  const res = await fetch("/api", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
+  methods: {
+    async getNotes() {
+      try {
+        const res = await fetch("/api", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const notes = await res.json();
+        this.notes = notes;
+        console.log("Notes loaded:", notes);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+      }
     },
-  });
-  const notes = await res.json();
-  console.log(notes);
-  return notes;
-}
 
-function renderNotes(data) {
-  const notesHTML = data.map((note) => noteComponent(note)).join("");
+    async handleSubmit() {
+      this.isSaving = true;
 
-  notes.innerHTML = notesHTML;
-}
+      const newNote = {
+        title: this.form.title,
+        note: this.form.note,
+        category: this.form.category,
+        id: Date.now(),
+      };
 
-function noteComponent({ title, note }) {
-  return `<div class="note">
-    <h2 class="note__title">${title}</h2>
-    <p class="note__body">
-      ${note}
-    </p>
-    <div class="note__actions">
-      <button class="note__btn note__view">View Detail</button>
-      <button class="note__btn note__delete">Delete Note</button>
-    </div>
-  </div>`;
-}
+      console.log("Saving note:", newNote);
+
+      try {
+        await fetch("/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newNote),
+        });
+
+        // Clear form
+        this.form.title = "";
+        this.form.note = "";
+        this.form.category = "";
+
+        // Reload notes
+        await this.getNotes();
+      } catch (error) {
+        console.error("Error saving note:", error);
+      } finally {
+        this.isSaving = false;
+      }
+    },
+  },
+
+  async mounted() {
+    console.log("Vue app mounted");
+    await this.getNotes();
+  },
+}).mount("#app");

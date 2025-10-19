@@ -5,51 +5,71 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <main class="container">
-      <h1>Catatan</h1>
-      <h3>Buat catatan baru</h3>
-      <form id="form" action="/" method="POST">
-        <label for="title"
-          >Judul
-          <input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Judul catatan"
-            required
-          />
-        </label>
-        <label for="note"
-          >Catatan
-          <textarea
-            name="note"
-            id="note"
-            cols="30"
-            rows="10"
-            placeholder="Tulis catatan kamu disini..."
-            required
-          ></textarea>
-        </label>
-        <label for="category"
-          >Kategori
-          <select name="category" id="category" required>
-            <option value="">-- Pilih Kategori --</option>
-            <option value="personal">Pribadi</option>
-            <option value="work">Kerjaan</option>
-            <option value="other">Lainnya</option>
-          </select>
-        </label>
+    <div id="app" style="display: contents">
+      <main class="container">
+        <h1>Catatan</h1>
+        <h3>Buat catatan baru</h3>
+        <form @submit.prevent="handleSubmit">
+          <label for="title"
+            >Judul
+            <input
+              type="text"
+              id="title"
+              v-model="form.title"
+              placeholder="Judul catatan"
+              required
+            />
+          </label>
+          <label for="note"
+            >Catatan
+            <textarea
+              id="note"
+              v-model="form.note"
+              cols="30"
+              rows="10"
+              placeholder="Tulis catatan kamu disini..."
+              required
+            ></textarea>
+          </label>
+          <label for="category"
+            >Kategori
+            <select id="category" v-model="form.category" required>
+              <option value="">-- Pilih Kategori --</option>
+              <option value="personal">Pribadi</option>
+              <option value="work">Kerjaan</option>
+              <option value="other">Lainnya</option>
+            </select>
+          </label>
 
-        <button type="submit" id="save_button">Simpan</button>
-      </form>
-    </main>
-    <aside>
-      <h3>Catatan</h3>
-      <div id="notes" class="notes" div hx-get="/api" hx-trigger="load">
-          test
-      </div>
-    </aside>
+          <button type="submit" :disabled="isSaving">
+            {{ isSaving ? 'Menyimpan...' : 'Simpan' }}
+          </button>
+        </form>
+      </main>
+      <aside>
+        <h3>Catatan</h3>
+        <div class="notes">
+          <div v-for="note in notes" :key="note.id" class="note">
+            <h2 class="note__title">{{ note.title }}</h2>
+            <p class="note__body">{{ note.note }}</p>
+            <div class="note__actions">
+              <button class="note__btn note__view" @click="viewDetail(note)">
+                View Detail
+              </button>
+              <button
+                class="note__btn note__delete"
+                @click="deleteNote(note.id)"
+              >
+                Delete Note
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <footer>&copy; 2025 Made with love for Domainesia</footer>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="/app.js"></script>
-    <footer>&copy; 2025 Made with love for Domainesia</footer>
   </body>
 </html>
