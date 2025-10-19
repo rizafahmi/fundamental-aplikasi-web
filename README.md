@@ -1,6 +1,6 @@
-# Fundamental Aplikasi Web
+# Dasar Pemrograman Web
 
-Materi webinar tentang fundamental pengembangan aplikasi web bersama @domainesia. Materi ini menggunakan TutorialKit.
+Materi webinar tentang dasar pemrograman aplikasi web bersama @domainesia. Materi ini menggunakan TutorialKit.
 
 ## Outline Materi
 
