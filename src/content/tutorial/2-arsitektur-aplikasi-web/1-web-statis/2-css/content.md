@@ -1,20 +1,20 @@
 ---
 type: lesson
 title: CSS - Styling dan Presentasi Web
-focus: /style.css
+focus: /index.html
 ---
 
-# CSS: Membuat Web Menjadi Indah 🎨
+# CSS: Membuat Web Menjadi Indah
 
-CSS (Cascading Style Sheets) adalah bahasa stylesheet yang digunakan untuk mengatur tampilan dan layout elemen HTML. CSS memisahkan konten (HTML) dari presentasi (styling), memungkinkan desain yang fleksibel dan maintainable.
+Jika membangun halaman web kita ibaratkan sebagai membangun rumah, HTML adalah fondasi, rangka, dinding, lantai dan atap. Maka CSS adalah cat, interior dan eksterior yang membuat rumah kita menjadi lebih menarik.
 
-## Apa itu CSS?
+CSS adalah singkatan dari Cascading Style Sheet. Cascading secara harfiah artinya mengalir dari atas kebawah, style sheet kurang lebih maksudnya daftar atau catatan untuk perubahan tampilan yang akan dilakukan.
 
-CSS menggunakan sistem **selector** dan **property** untuk mengatur styling:
+CSS menggunakan sistem **selector** dan **property** untuk mengatur _styling_:
 
 - **Separation of Concerns**: Memisahkan struktur dari presentasi
-- **Reusable**: Style dapat digunakan kembali
-- **Responsive**: Mendukung berbagai ukuran layar
+- **Reusable**: Style dapat digunakan berulang-kali
+- **Responsive**: Membangun layout yang mendukung berbagai ukuran layar
 - **Cascading**: Sistem prioritas dalam penerapan style
 
 ## Cara Menerapkan CSS
@@ -22,17 +22,18 @@ CSS menggunakan sistem **selector** dan **property** untuk mengatur styling:
 ### 1. Inline CSS
 
 ```html
-<p style="color: blue; font-size: 16px;">Teks biru</p>
+<h1 style="color: tomato; font-size: 36px">Catatan</h1>
 ```
 
 ### 2. Internal CSS
 
 ```html
 <head>
+  <title>Aplikasi Catatan</title>
   <style>
-    p {
-      color: blue;
-      font-size: 16px;
+    h1 {
+      color: tomato;
+      font-size: 36px;
     }
   </style>
 </head>
@@ -42,15 +43,16 @@ CSS menggunakan sistem **selector** dan **property** untuk mengatur styling:
 
 ```html
 <head>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Aplikasi Catatan</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 ```
 
 ```css
-/* styles.css */
-p {
-  color: blue;
-  font-size: 16px;
+/* style.css */
+h1 {
+  color: tomato;
+  font-size: 36px;
 }
 ```
 
@@ -69,15 +71,18 @@ selector {
 
 ```css
 h1 {
-  color: #333;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 3rem;
+  text-align: center;
+}
+
+#subtitle {
+  color: #4f46e5;
+  text-align: center;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 1000px;
+  margin: 1rem auto;
 }
 ```
 
@@ -130,14 +135,13 @@ a[target="_blank"] {
 ### 5. Pseudo Selector
 
 ```css
-a:hover {
-  color: blue;
+[type="submit"]:hover {
+  background-color: #1f2937;
 }
-li:first-child {
-  font-weight: bold;
-}
-input:focus {
-  outline: 2px solid blue;
+
+[type="submit"]:disabled {
+  background-color: #1f2937;
+  cursor: not-allowed;
 }
 ```
 
@@ -167,30 +171,23 @@ Setiap elemen HTML adalah sebuah "box" yang terdiri dari:
 ### 1. Flexbox
 
 ```css
-.flex-container {
+.note {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.flex-item {
-  flex: 1;
+  border: 3px solid var(--light);
+  padding: 1.5rem;
+  transition: var(--transition);
 }
 ```
 
 ### 2. CSS Grid
 
 ```css
-.grid-container {
+form {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  grid-gap: 20px;
-}
-
-.grid-item {
-  background-color: #f0f0f0;
-  padding: 20px;
+  grid-gap: 1rem;
+  margin: 1rem 0;
 }
 ```
 
@@ -217,289 +214,209 @@ Setiap elemen HTML adalah sebuah "box" yang terdiri dari:
 }
 ```
 
-## Responsive Design
-
-### Media Queries
-
-```css
-/* Mobile First */
-.container {
-  width: 100%;
-  padding: 0 15px;
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-  .container {
-    max-width: 750px;
-    margin: 0 auto;
-  }
-}
-
-/* Desktop */
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1200px;
-  }
-}
-```
-
-### Flexible Units
-
-```css
-.responsive-text {
-  font-size: clamp(16px, 4vw, 24px);
-  line-height: 1.5;
-}
-
-.responsive-spacing {
-  margin: 2rem 0;
-  padding: 1rem;
-}
-```
-
 ## CSS Custom Properties (Variables)
 
 ```css
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --border-radius: 8px;
-  --spacing-unit: 1rem;
+  --color-primary: #4f46e5;
+  --color-secondary: #ec4899;
+  --dark: #1f2937;
+  --light: #f3f4f6;
+  --transition: all 250ms ease-in-out;
 }
 
-.button {
-  background-color: var(--primary-color);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-unit);
+h3 {
+  color: var(--color-primary);
+  text-align: center;
 }
 
-.card {
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-unit);
-}
-```
-
-## Modern CSS Features
-
-### 1. CSS Transitions
-
-```css
-.button {
-  background-color: blue;
-  transition: all 0.3s ease;
+.note__btn {
+  color: var(--light);
+  transition: var(--transition);
 }
 
-.button:hover {
-  background-color: darkblue;
-  transform: scale(1.05);
+.note__view {
+  background-color: var(--color-primary);
+}
+
+.note__delete {
+  background-color: var(--color-secondary);
 }
 ```
 
-### 2. CSS Animations
-
-```css
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-```
-
-### 3. CSS Functions
-
-```css
-.calculated {
-  width: calc(100% - 40px);
-  height: min(300px, 50vh);
-  margin: max(20px, 2rem);
-}
-```
-
-## Peran CSS dalam Web Statis
+## Peran CSS dalam halaman Web
 
 Dalam arsitektur web statis, CSS berperan untuk:
 
-1. **Visual Design**: Mengatur warna, typography, spacing
+1. **Visual Design**: Mengatur warna, typography, dan spacing
 2. **Layout**: Mengorganisir elemen di halaman
-3. **Responsive**: Menyesuaikan dengan berbagai device
+3. **Responsive**: Menyesuaikan dengan berbagai ukuran layar
 4. **User Experience**: Meningkatkan interaksi visual
 5. **Branding**: Konsistensi identitas visual
 
-## CSS Methodologies
+## CSS untuk aplikasi Catatan
 
-### 1. BEM (Block Element Modifier)
-
-```css
-/* Block */
-.card {
-}
-
-/* Element */
-.card__header {
-}
-.card__body {
-}
-.card__footer {
-}
-
-/* Modifier */
-.card--featured {
-}
-.card__header--large {
-}
-```
-
-### 2. Atomic CSS
+### Reset dan Basis Styling
 
 ```css
-.m-0 {
-  margin: 0;
-}
-.p-4 {
-  padding: 1rem;
-}
-.text-center {
-  text-align: center;
-}
-.bg-primary {
-  background-color: #007bff;
-}
-```
-
-## Performance Considerations
-
-### 1. CSS Optimization
-
-```css
-/* ❌ Inefficient */
-div p span a {
-  color: red;
-}
-
-/* ✅ Efficient */
-.link {
-  color: red;
-}
-```
-
-### 2. Critical CSS
-
-```html
-<head>
-  <!-- Critical CSS inline -->
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-    .header {
-      background: #fff;
-    }
-  </style>
-
-  <!-- Non-critical CSS async -->
-  <link
-    rel="preload"
-    href="styles.css"
-    as="style"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-</head>
-```
-
-## Contoh Complete Styling
-
-```css
-/* Reset and Base Styles */
-* {
+*,
+*::after,
+*::before {
+  border: 0;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --color-primary: #4f46e5;
+  --color-secondary: #ec4899;
+  --dark: #1f2937;
+  --light: #f3f4f6;
+  --transition: all 250ms ease-in-out;
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
+  display: grid;
+  place-content: center;
+  padding: 2rem;
+  color: var(--dark);
 }
 
-/* Layout */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 1000px;
+  margin: 1rem auto;
 }
+```
 
-/* Components */
-.header {
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+### Styling Heading
+
+```css
+h1 {
+  font-size: 3rem;
+  text-align: center;
 }
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
+h3 {
+  color: var(--color-primary);
+  text-align: center;
 }
+```
 
-.nav ul {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-}
+### Styling Form
 
-.nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
+```css
+form {
+  display: grid;
+  grid-gap: 1rem;
+  margin: 1rem 0;
 
-.nav a:hover {
-  color: #007bff;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    gap: 1rem;
+  label,
+  input,
+  textarea {
+    font-size: inherit;
+    font-size: inherit;
   }
+  [for="title"],
+  [for="note"],
+  [for="category"] {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+    grid-gap: 1rem;
+    background-color: var(--light);
+    font-weight: bold;
 
-  .nav ul {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+    input,
+    textarea,
+    select {
+      flex: 1 1 80%;
+      border: 2px solid var(--dark);
+      padding: 0.5rem;
+      color: var(--dark);
+      width: 100%;
+
+      &:focus {
+        outline: 3px solid var(--dark);
+      }
+    }
+  }
+  [type="submit"] {
+    background-color: var(--color-primary);
+    color: var(--light);
+    padding: 1.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+
+    &:hover,
+    &:focus {
+      background-color: var(--dark);
+    }
+    &:disabled {
+      background-color: var(--dark);
+      cursor: not-allowed;
+    }
   }
 }
 ```
 
-## Limitasi CSS dalam Web Statis
+### Styling Notes
 
-- **Tidak ada logic**: Tidak bisa melakukan conditional styling dinamis
-- **State management**: Terbatas pada pseudo-classes
-- **Data binding**: Tidak bisa bind dengan data dinamis
-- **Component reusability**: Terbatas tanpa framework
+```css
+.notes {
+  max-width: 1000px;
+  margin: 2rem auto 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: 1.5rem;
+}
 
-## Next Steps
+.note {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 3px solid var(--light);
+  padding: 1.5rem;
+  transition: var(--transition);
+}
 
-Setelah memahami CSS:
+.note__title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
 
-1. **CSS Preprocessing**: Sass, Less, Stylus
-2. **CSS Frameworks**: Bootstrap, Tailwind CSS
-3. **CSS-in-JS**: Untuk aplikasi dynamic
-4. **Design Systems**: Konsistensi UI/UX
+.note__body {
+  overflow: hidden;
+  max-height: 8rem;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+}
 
-CSS adalah seni dan sains - kombinasi kreativitas dan logika teknis! 🎨✨
+.note__actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 0.5rem;
+
+  .note__btn {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    color: var(--light);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .note__view {
+    background-color: var(--color-primary);
+  }
+
+  .note__delete {
+    background-color: var(--color-secondary);
+  }
+}
+```
