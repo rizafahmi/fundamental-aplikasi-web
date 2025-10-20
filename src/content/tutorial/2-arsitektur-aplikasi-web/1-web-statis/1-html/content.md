@@ -4,7 +4,7 @@ title: HTML - Struktur Dasar Web
 focus: /index.html
 ---
 
-![](/public/statis.gif)
+<video src="/public/statis.m4v" autoplay loop muted></video>
 
 # HTML: Fondasi Struktur Web
 
@@ -101,6 +101,7 @@ Berikut beberapa elemen HTML yang kita gunakan untuk mulai membangun struktur ap
 ![Aplikasi Catatan Sederhana](/public/localhost_3000_.png)
 
 ### Struktur dasar
+
 ```html
 <!doctype html>
 <html>
@@ -108,13 +109,10 @@ Berikut beberapa elemen HTML yang kita gunakan untuk mulai membangun struktur ap
     <title>Aplikasi Catatan</title>
   </head>
   <body>
-    <main class="container">
-      
-    </main>
+    <main class="container"></main>
     <footer>&copy; 2025 Made with love for Domainesia</footer>
   </body>
 </html>
-
 ```
 
 ### Content Elements
