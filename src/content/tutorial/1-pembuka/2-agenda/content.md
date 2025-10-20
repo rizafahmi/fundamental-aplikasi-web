@@ -8,7 +8,7 @@ previews: false
 
 # Agenda
 
-## 🏗️ **Arsitektur Aplikasi Web**
+## **Arsitektur Aplikasi Web**
 
 - **Arsitektur Web Statis**
   - HTML - Struktur konten
