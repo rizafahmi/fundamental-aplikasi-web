@@ -36,3 +36,9 @@ Di akhir sesi, diharapkan teman-teman mampu:
 - Menguasai konsep dasar HTML, CSS, dan JavaScript sebagai fondasi membangun aplikasi web modern
 - Memahami beberapa arsitektur aplikasi web seperti web statis server-side rendering, client-side rendering dan beberapa lainnya.
 - Memahami proses pembuatan aplikasi web interaktif dari awal.
+
+## Aplikasi Catatan Sederhana
+
+Sepanjang webinar ini, kita akan membangun sebuah aplikasi catatan sederhana yang memungkinkan pengguna untuk membuat, dan melihat catatan mereka.
+
+<img src="/public/localhost_3000_.png" alt="Aplikasi Catatan Sederhana" style="width: 1000px">
