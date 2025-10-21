@@ -1,785 +1,421 @@
 ---
 type: lesson
-title: Backend dalam SSR - Server Logic & Rendering
+title: Backend
 ---
 
-# Backend dalam Arsitektur SSR 🔧
+<video src="/public/statis.m4v" autoplay loop muted></video>
 
-Backend dalam Server-Side Rendering (SSR) adalah jantung aplikasi yang menangani logic bisnis, rendering HTML, dan komunikasi dengan database. Backend bertanggung jawab menghasilkan HTML lengkap sebelum dikirim ke browser.
+# Backend
 
-## Apa itu Backend dalam SSR?
+Backend adalah jantung aplikasi yang menangani logic bisnis, rendering HTML, dan komunikasi dengan database. Backend bertanggung jawab menghasilkan HTML lengkap sebelum dikirim ke browser.
 
-Backend SSR adalah:
+Arsitektur ini juga dikenal dengan istilah server yang dapat menerima request dan mengirimkan response dalam format html. Arsitektur ini juga digunakan lebih lanjut untuk arsitektur server-side rendering.
+
+## Apa itu Backend?
+
+Backend adalah:
 
 - **Server-Side Rendering Engine**: Menghasilkan HTML di server
-- **Business Logic Handler**: Memproses data dan logic aplikasi
+- **Business Logic Handler**: Memproses data dan logika aplikasi
 - **Database Interface**: Mengelola komunikasi dengan database
 - **API Provider**: Menyediakan endpoints untuk berbagai kebutuhan
-- **Authentication Manager**: Menangani autentikasi dan autorisasi
+- **Authentication Manager**: Menangani otentikasi dan otorisasi
 
-## Komponen Utama Backend SSR
+## Komponen Utama Backend
 
-### 1. Web Server Framework
+### Web Server
+
+Contoh menggunakan fungsi built-in web server.
+
 ```javascript
-// Contoh menggunakan Express.js (Node.js)
-const express = require('express');
-const path = require('path');
-const app = express();
+import http from "http";
 
-// Template engine setup
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Create a local server to receive data from
+const server = http.createServer();
 
-// Middleware
-app.use(express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Listen to the request event
+server.on("request", (request, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.end(`<h1>Hello from server</h1>`);
+});
 
-// Routes
-app.get('/', async (req, res) => {
+server.listen(3000);
+```
+
+### Template Rendering
+
+Berikut adalah contoh rendering file `index.html` yang kita punya sebelumnya.
+
+```javascript
+import http from "http";
+import { readFile } from "fs/promises";
+import { dirname, join } from "path";
+
+// Create a local server to receive data from
+const server = http.createServer();
+
+// Listen to the request event
+server.on("request", async (req, res) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
+
+  res.writeHead(200, { "Content-Type": "text/html" });
+  res.end(template);
+});
+
+server.listen(3000);
+```
+
+Jika ingin template yang dinamis, kita bisa menggunakan template engine seperti [EJS](https://ejs.co/), [Handlebars](https://handlebarsjs.com/) atau [Nunjucks](https://mozilla.github.io/nunjucks/).
+
+### Routing Library
+
+```javascript
+import http from "http";
+import { readFile } from "fs/promises";
+import { dirname, join } from "path";
+
+// Create a local server to receive data from
+const server = http.createServer();
+
+// Listen to the request event
+server.on("request", async (req, res) => {
+  if (req.url === "/" || req.url === "/index.html") {
+    const template = await readFile(
+      join(__dirname, "templates", "index.html"),
+      "utf-8",
+    );
+
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(template);
+  } else {
+    console.error(`${url} is 404!`);
+    res.writeHead(404);
+    res.end();
+  }
+});
+
+server.listen(3000);
+```
+
+### Assets Management
+
+File statis seperti css, javascript, gambar dan file statis lainnya juga perlu ditangani oleh web server.
+
+```javascript
+import http from "http";
+import { readFile } from "fs/promises";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Create a local server to receive data from
+const server = http.createServer();
+
+// Listen to the request event
+server.on("request", async (req, res) => {
+  if (req.url === "/" || req.url === "/index.html") {
+    const template = await readFile(
+      join(__dirname, "templates", "index.html"),
+      "utf-8",
+    );
+
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(template);
+  }
+  // Serve CSS files
+  else if (req.url.endsWith(".css")) {
     try {
-        // Fetch data from database
-        const posts = await Post.findAll({ limit: 10 });
-        const user = req.session.user;
-
-        // Render HTML with data
-        res.render('index', {
-            title: 'Home Page',
-            posts: posts,
-            user: user,
-            meta: {
-                description: 'Welcome to our blog',
-                keywords: 'blog, articles, news'
-            }
-        });
+      const content = await readFile(
+        join(__dirname, "public", req.url),
+        "utf-8",
+      );
+      res.writeHead(200, { "Content-Type": "text/css" });
+      res.end(content);
     } catch (error) {
-        console.error('Error rendering home page:', error);
-        res.status(500).render('error', { message: 'Internal Server Error' });
+      console.error(`${req.url} is 404!`);
+      res.writeHead(404);
+      res.end();
     }
-});
-
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
-```
-
-### 2. Template Rendering System
-```javascript
-// Controller untuk blog posts
-class BlogController {
-    async showPost(req, res) {
-        try {
-            const postId = req.params.id;
-
-            // Fetch post data
-            const post = await Post.findByPk(postId, {
-                include: [
-                    { model: User, as: 'author' },
-                    { model: Comment, include: [User] }
-                ]
-            });
-
-            if (!post) {
-                return res.status(404).render('404', {
-                    title: 'Post Not Found'
-                });
-            }
-
-            // Prepare data for template
-            const templateData = {
-                title: post.title,
-                post: post,
-                author: post.author,
-                comments: post.Comments,
-                meta: {
-                    description: post.excerpt,
-                    keywords: post.tags.join(', '),
-                    ogImage: post.featured_image,
-                    canonical: `${process.env.BASE_URL}/blog/${post.slug}`
-                },
-                breadcrumbs: [
-                    { text: 'Home', url: '/' },
-                    { text: 'Blog', url: '/blog' },
-                    { text: post.title, url: null }
-                ]
-            };
-
-            // Render template dengan data
-            res.render('blog/post', templateData);
-
-        } catch (error) {
-            console.error('Error showing post:', error);
-            res.status(500).render('error', {
-                title: 'Server Error',
-                message: 'Unable to load post'
-            });
-        }
-    }
-
-    async createPost(req, res) {
-        try {
-            const { title, content, tags } = req.body;
-            const userId = req.session.user.id;
-
-            // Validate input
-            const errors = this.validatePostData(req.body);
-            if (errors.length > 0) {
-                return res.render('blog/create', {
-                    title: 'Create Post',
-                    errors: errors,
-                    formData: req.body
-                });
-            }
-
-            // Create new post
-            const post = await Post.create({
-                title,
-                content,
-                slug: this.generateSlug(title),
-                author_id: userId,
-                tags: tags.split(',').map(tag => tag.trim())
-            });
-
-            // Redirect to new post
-            res.redirect(`/blog/${post.slug}`);
-
-        } catch (error) {
-            console.error('Error creating post:', error);
-            res.render('blog/create', {
-                title: 'Create Post',
-                errors: ['Failed to create post. Please try again.'],
-                formData: req.body
-            });
-        }
-    }
-
-    validatePostData(data) {
-        const errors = [];
-
-        if (!data.title || data.title.trim().length < 5) {
-            errors.push('Title must be at least 5 characters long');
-        }
-
-        if (!data.content || data.content.trim().length < 50) {
-            errors.push('Content must be at least 50 characters long');
-        }
-
-        return errors;
-    }
-
-    generateSlug(title) {
-        return title
-            .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .trim('-');
-    }
-}
-```
-
-### 3. Database Integration
-```javascript
-// Database models dan queries
-const { Sequelize, DataTypes } = require('sequelize');
-
-// Database connection
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false
-});
-
-// Post model
-const Post = sequelize.define('Post', {
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-    },
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: [5, 200]
-        }
-    },
-    slug: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    content: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    excerpt: {
-        type: DataTypes.STRING(500)
-    },
-    featured_image: DataTypes.STRING,
-    tags: {
-        type: DataTypes.JSON,
-        defaultValue: []
-    },
-    published_at: DataTypes.DATE,
-    status: {
-        type: DataTypes.ENUM('draft', 'published', 'archived'),
-        defaultValue: 'draft'
-    }
-});
-
-// User model
-const User = sequelize.define('User', {
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-    },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
-    password_hash: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    profile: {
-        type: DataTypes.JSON,
-        defaultValue: {}
-    }
-});
-
-// Associations
-Post.belongsTo(User, { as: 'author', foreignKey: 'author_id' });
-User.hasMany(Post, { foreignKey: 'author_id' });
-
-// Database service
-class DatabaseService {
-    static async getPublishedPosts(page = 1, limit = 10) {
-        const offset = (page - 1) * limit;
-
-        return await Post.findAndCountAll({
-            where: { status: 'published' },
-            include: [{ model: User, as: 'author', attributes: ['username', 'profile'] }],
-            order: [['published_at', 'DESC']],
-            limit,
-            offset
-        });
-    }
-
-    static async getPostBySlug(slug) {
-        return await Post.findOne({
-            where: { slug, status: 'published' },
-            include: [{ model: User, as: 'author' }]
-        });
-    }
-
-    static async searchPosts(query) {
-        const { Op } = require('sequelize');
-
-        return await Post.findAll({
-            where: {
-                status: 'published',
-                [Op.or]: [
-                    { title: { [Op.iLike]: `%${query}%` } },
-                    { content: { [Op.iLike]: `%${query}%` } },
-                    { tags: { [Op.contains]: [query] } }
-                ]
-            },
-            include: [{ model: User, as: 'author' }],
-            limit: 20
-        });
-    }
-}
-```
-
-### 4. Authentication & Session Management
-```javascript
-const bcrypt = require('bcryptjs');
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-
-// Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    store: new SequelizeStore({
-        db: sequelize
-    }),
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-    }
-}));
-
-// Authentication middleware
-class AuthMiddleware {
-    static async requireAuth(req, res, next) {
-        if (!req.session.user) {
-            return res.redirect('/login?redirect=' + encodeURIComponent(req.originalUrl));
-        }
-
-        // Verify user still exists and is active
-        const user = await User.findByPk(req.session.user.id);
-        if (!user || user.status === 'inactive') {
-            req.session.destroy();
-            return res.redirect('/login');
-        }
-
-        req.user = user;
-        next();
-    }
-
-    static requireRole(role) {
-        return async (req, res, next) => {
-            if (!req.user || req.user.role !== role) {
-                return res.status(403).render('error', {
-                    title: 'Access Denied',
-                    message: 'You do not have permission to access this resource'
-                });
-            }
-            next();
-        };
-    }
-}
-
-// Authentication controller
-class AuthController {
-    async showLogin(req, res) {
-        if (req.session.user) {
-            return res.redirect('/dashboard');
-        }
-
-        res.render('auth/login', {
-            title: 'Login',
-            redirect: req.query.redirect || '/',
-            errors: req.flash('errors') || [],
-            message: req.flash('message') || ''
-        });
-    }
-
-    async processLogin(req, res) {
-        const { email, password } = req.body;
-        const redirect = req.body.redirect || '/';
-
-        try {
-            // Find user
-            const user = await User.findOne({ where: { email } });
-            if (!user) {
-                req.flash('errors', ['Invalid email or password']);
-                return res.redirect('/login');
-            }
-
-            // Verify password
-            const isValidPassword = await bcrypt.compare(password, user.password_hash);
-            if (!isValidPassword) {
-                req.flash('errors', ['Invalid email or password']);
-                return res.redirect('/login');
-            }
-
-            // Create session
-            req.session.user = {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                role: user.role
-            };
-
-            // Update last login
-            await user.update({ last_login: new Date() });
-
-            res.redirect(redirect);
-
-        } catch (error) {
-            console.error('Login error:', error);
-            req.flash('errors', ['An error occurred during login']);
-            res.redirect('/login');
-        }
-    }
-
-    async logout(req, res) {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Logout error:', err);
-            }
-            res.redirect('/');
-        });
-    }
-}
-```
-
-## Keuntungan Backend SSR
-
-### 1. SEO Optimization
-```javascript
-// SEO-friendly routing dan meta data
-app.get('/blog/:slug', async (req, res) => {
-    const post = await Post.findOne({ where: { slug: req.params.slug } });
-
-    if (!post) {
-        return res.status(404).render('404');
-    }
-
-    // Generate comprehensive meta data
-    const seoData = {
-        title: `${post.title} | My Blog`,
-        description: post.excerpt,
-        canonical: `${process.env.BASE_URL}/blog/${post.slug}`,
-        ogTitle: post.title,
-        ogDescription: post.excerpt,
-        ogImage: post.featured_image,
-        ogUrl: `${process.env.BASE_URL}/blog/${post.slug}`,
-        structuredData: {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.excerpt,
-            "author": {
-                "@type": "Person",
-                "name": post.author.username
-            },
-            "datePublished": post.published_at,
-            "image": post.featured_image
-        }
-    };
-
-    res.render('blog/post', { post, seo: seoData });
-});
-```
-
-### 2. Server-Side Data Fetching
-```javascript
-// Data fetching sebelum rendering
-class PageController {
-    async showHomePage(req, res) {
-        try {
-            // Parallel data fetching
-            const [
-                recentPosts,
-                featuredPosts,
-                categories,
-                siteStats
-            ] = await Promise.all([
-                Post.findAll({ limit: 5, order: [['createdAt', 'DESC']] }),
-                Post.findAll({ where: { featured: true }, limit: 3 }),
-                Category.findAll({ attributes: ['name', 'slug', 'post_count'] }),
-                this.getSiteStatistics()
-            ]);
-
-            res.render('index', {
-                title: 'Home',
-                recentPosts,
-                featuredPosts,
-                categories,
-                stats: siteStats,
-                user: req.session.user || null
-            });
-
-        } catch (error) {
-            console.error('Error loading home page:', error);
-            res.status(500).render('error');
-        }
-    }
-
-    async getSiteStatistics() {
-        const [postCount, userCount, commentCount] = await Promise.all([
-            Post.count({ where: { status: 'published' } }),
-            User.count({ where: { status: 'active' } }),
-            Comment.count({ where: { approved: true } })
-        ]);
-
-        return { postCount, userCount, commentCount };
-    }
-}
-```
-
-### 3. Caching Strategies
-```javascript
-const Redis = require('redis');
-const redis = Redis.createClient(process.env.REDIS_URL);
-
-// Page caching middleware
-function cacheMiddleware(duration = 300) {
-    return async (req, res, next) => {
-        const key = `page:${req.originalUrl}`;
-
-        try {
-            const cached = await redis.get(key);
-            if (cached) {
-                return res.send(cached);
-            }
-
-            // Override res.render to cache the output
-            const originalRender = res.render;
-            res.render = function(view, data) {
-                originalRender.call(this, view, data, (err, html) => {
-                    if (err) return next(err);
-
-                    // Cache the rendered HTML
-                    redis.setex(key, duration, html);
-                    res.send(html);
-                });
-            };
-
-            next();
-        } catch (error) {
-            console.error('Cache error:', error);
-            next();
-        }
-    };
-}
-
-// Usage
-app.get('/', cacheMiddleware(600), homeController.index);
-app.get('/blog/:slug', cacheMiddleware(1800), blogController.show);
-```
-
-## Challenges Backend SSR
-
-### 1. Performance Optimization
-```javascript
-// Database query optimization
-class OptimizedQuery {
-    static async getPostsWithPagination(page = 1, limit = 10) {
-        const offset = (page - 1) * limit;
-
-        // Use eager loading dan select only needed fields
-        return await Post.findAndCountAll({
-            attributes: ['id', 'title', 'slug', 'excerpt', 'published_at'],
-            include: [{
-                model: User,
-                as: 'author',
-                attributes: ['username', 'profile']
-            }],
-            where: { status: 'published' },
-            order: [['published_at', 'DESC']],
-            limit,
-            offset,
-            // Use database-level pagination
-            subQuery: false
-        });
-    }
-
-    // Query result caching
-    static async getCachedCategories() {
-        const cacheKey = 'categories:all';
-        let categories = await redis.get(cacheKey);
-
-        if (!categories) {
-            categories = await Category.findAll({
-                attributes: ['id', 'name', 'slug'],
-                order: [['name', 'ASC']]
-            });
-
-            await redis.setex(cacheKey, 3600, JSON.stringify(categories));
-        } else {
-            categories = JSON.parse(categories);
-        }
-
-        return categories;
-    }
-}
-```
-
-### 2. Error Handling & Monitoring
-```javascript
-// Comprehensive error handling
-app.use((error, req, res, next) => {
-    console.error('Application Error:', {
-        error: error.message,
-        stack: error.stack,
-        url: req.originalUrl,
-        method: req.method,
-        userAgent: req.get('User-Agent'),
-        ip: req.ip,
-        user: req.session.user?.id || 'anonymous'
-    });
-
-    // Different responses based on error type
-    if (error.name === 'SequelizeValidationError') {
-        return res.status(400).render('error', {
-            title: 'Validation Error',
-            message: 'Please check your input and try again'
-        });
-    }
-
-    if (error.name === 'SequelizeConnectionError') {
-        return res.status(503).render('error', {
-            title: 'Service Unavailable',
-            message: 'Database connection error. Please try again later.'
-        });
-    }
-
-    // Generic server error
-    res.status(500).render('error', {
-        title: 'Server Error',
-        message: process.env.NODE_ENV === 'development'
-            ? error.message
-            : 'Something went wrong. Please try again later.'
-    });
-});
-
-// Health check endpoint
-app.get('/health', async (req, res) => {
-    const health = {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        database: 'disconnected',
-        redis: 'disconnected'
-    };
-
+  }
+  // Serve JS files
+  else if (req.url.endsWith(".js")) {
     try {
-        await sequelize.authenticate();
-        health.database = 'connected';
+      const content = await readFile(
+        join(__dirname, "public", req.url),
+        "utf-8",
+      );
+      res.writeHead(200, { "Content-Type": "text/javascript" });
+      res.end(content);
     } catch (error) {
-        health.database = 'error';
-        health.status = 'degraded';
+      console.error(`${req.url} is 404!`);
+      res.writeHead(404);
+      res.end();
     }
-
-    try {
-        await redis.ping();
-        health.redis = 'connected';
-    } catch (error) {
-        health.redis = 'error';
-        health.status = 'degraded';
-    }
-
-    const statusCode = health.status === 'ok' ? 200 : 503;
-    res.status(statusCode).json(health);
+  } else {
+    console.error(`${req.url} is 404!`);
+    res.writeHead(404);
+    res.end();
+  }
 });
+
+server.listen(3000);
 ```
 
-## Modern SSR Frameworks
+### Web Framework
 
-### 1. Next.js (React-based)
+Umumnya, dengan menggunakan web framework seperti Express, Hono, H3 dan lainnya, kode untuk web server, routing, dan assets management bisa menjadi lebih ringkas.
+
+[H3](https://h3.dev/) menarik karena cepat, ringan, dan ringkas. H3 sangat dekat dengan web standards sehingga lebih mudah dijalankan dengan berbagai runtime JavaScript seperti Node, Deno, Bun dan yang lainnya.
+
 ```javascript
-// Next.js getServerSideProps
-export async function getServerSideProps(context) {
-    const { params } = context;
+import { H3, serve, html, readBody } from "h3";
+import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-    try {
-        const post = await fetchPost(params.slug);
+import { staticFilesHandler } from "./lib/static.js";
 
-        if (!post) {
-            return { notFound: true };
-        }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-        return {
-            props: {
-                post,
-                meta: {
-                    title: post.title,
-                    description: post.excerpt
-                }
-            }
-        };
-    } catch (error) {
-        return {
-            props: {
-                error: 'Failed to load post'
-            }
-        };
-    }
-}
+const app = new H3();
+
+// Serve static files from templates directory
+app.use("/**", staticFilesHandler);
+
+// Serve the main HTML page
+app.get("/", async (event) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
+
+  return html(event, template);
+});
+
+serve(app, { port: 3000 });
+
+console.log("Server running on http://localhost:3000");
 ```
 
-### 2. Nuxt.js (Vue-based)
+### Web Server untuk Aplikasi Catatan
+
+Pertama, untuk dapat mengirimkan data dari browser ke server, kita perlu ubah metode pengiriman form. Jika sebelumnya semua data diproses di browser (dengan JavaScript), sekarang metode pengiriman form perlu diubah menjadi POST di file `index.html`.
+
+```diff
+<!doctype html>
+<html>
+  <head>
+    <title>Aplikasi Catatan</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Catatan</h1>
+      <h3>Buat catatan baru</h3>
+-     <form id="form">
++     <form id="form" action="/" method="POST">
+        <label for="title"
+          >Judul
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Judul catatan"
+            required
+          />
+        </label>
+        <label for="note"
+          >Catatan
+          <textarea
+            name="note"
+            id="note"
+            cols="30"
+            rows="10"
+            placeholder="Tulis catatan kamu disini..."
+            required
+          ></textarea>
+        </label>
+        <label for="category"
+          >Kategori
+          <select name="category" id="category" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="personal">Pribadi</option>
+            <option value="work">Kerjaan</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </label>
+
+        <button type="submit" id="save_button">Simpan</button>
+      </form>
+    </main>
+    <aside>
+      <h3>Catatan</h3>
+      <div class="notes">{{NOTES}}</div>
+    </aside>
+    <script src="/app.js"></script>
+    <footer>&copy; 2025 Made with love for Domainesia</footer>
+  </body>
+</html>
+```
+
+#### Menangani `POST /`
+
+Di sisi server, kita harus menangani dan membaca data form yang dikirimkan.
+
 ```javascript
-// Nuxt.js asyncData
-export default {
-    async asyncData({ params, $axios }) {
-        try {
-            const post = await $axios.$get(`/api/posts/${params.slug}`);
-            return { post };
-        } catch (error) {
-            throw new Error('Post not found');
-        }
+import { H3, serve, html, readBody } from "h3";
+import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+import { staticFilesHandler } from "./lib/static.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = new H3();
+
+// Serve static files from templates directory
+app.use("/**", staticFilesHandler);
+
+// Serve the main HTML page
+app.get("/", async (event) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
+
+  return html(event, template);
+});
+
+app.post("/", async (event) => {
+  const data = await readBody(event);
+  console.log(data);
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/",
     },
-
-    head() {
-        return {
-            title: this.post.title,
-            meta: [
-                { hid: 'description', name: 'description', content: this.post.excerpt }
-            ]
-        };
-    }
-};
-```
-
-## Best Practices
-
-### 1. Security
-```javascript
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-
-// Security headers
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "data:", "https:"]
-        }
-    }
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP'
+  });
 });
 
-app.use('/api/', limiter);
+serve(app, { port: 3000 });
+
+console.log("Server running on http://localhost:3000");
 ```
 
-### 2. Performance Monitoring
+#### Menyimpan Catatan
+
+```diff
+import { H3, serve, html, readBody } from "h3";
+import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+import { staticFilesHandler } from "./lib/static.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
++ let NOTES = [];
+
+const app = new H3();
+
+function noteComponent({ title, note }) {
+  return `<div class="note">
+    <h2 class="note__title">${title}</h2>
+    <p class="note__body">
+      ${note}
+    </p>
+    <div class="note__actions">
+      <button class="note__btn note__view">View Detail</button>
+      <button class="note__btn note__delete">Delete Note</button>
+    </div>
+  </div>`;
+}
+
+// Serve static files from templates directory
+app.use("/**", staticFilesHandler);
+
+// Serve the main HTML page
+app.get("/", async (event) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
+
+  return html(event, template);
+});
+
+app.post("/", async (event) => {
+  const data = await readBody(event);
+- console.log(data);
++ NOTES = NOTES.concat(data);
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/",
+    },
+  });
+});
+
+serve(app, { port: 3000 });
+
+console.log("Server running on http://localhost:3000");
+
+```
+
+#### Menampilkan Daftar Catatan
+
+Untuk menampilkan daftar catatan, dan berhubung tidak menggunakan template engine, kita akan menggunakan trik [string replace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace).
+
+```html
+<aside>
+  <h3>Catatan</h3>
+  <div class="notes">{{NOTES}}</div>
+</aside>
+```
+
+Untuk setiap catatan akan dibuatkan komponen tersendiri, dan ketika ingin ditampilkan dapat menggunakan pemanggilan fungsi.
+
 ```javascript
-// Response time tracking
-app.use((req, res, next) => {
-    const startTime = Date.now();
+function noteComponent({ title, note }) {
+  return `<div class="note">
+    <h2 class="note__title">${title}</h2>
+    <p class="note__body">
+      ${note}
+    </p>
+    <div class="note__actions">
+      <button class="note__btn note__view">View Detail</button>
+      <button class="note__btn note__delete">Delete Note</button>
+    </div>
+  </div>`;
+}
 
-    res.on('finish', () => {
-        const duration = Date.now() - startTime;
-        console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+// Serve the main HTML page
+app.get("/", async (event) => {
+  const template = await readFile(
+    join(__dirname, "templates", "index.html"),
+    "utf-8",
+  );
 
-        // Log slow requests
-        if (duration > 1000) {
-            console.warn(`Slow request: ${req.originalUrl} took ${duration}ms`);
-        }
-    });
+  // Replace placeholders in template
+  const notesHTML = NOTES.map((note) => noteComponent(note)).join("");
 
-    next();
+  const renderedHTML = template.replace("{{NOTES}}", notesHTML);
+
+  return html(event, renderedHTML);
 });
 ```
 
 ## Kesimpulan
 
-Backend SSR menyediakan:
-- **Complete HTML rendering** di server
-- **SEO-friendly** content delivery
-- **Fast initial page loads** dengan pre-rendered content
-- **Server-side data fetching** untuk dynamic content
-- **Centralized authentication** dan session management
-
-Challenges yang perlu diperhatikan:
-- **Server resource management** untuk rendering
-- **Caching strategies** untuk performance
-- **Database optimization** untuk scalability
-- **Error handling** untuk reliability
-
-Backend SSR adalah pilihan solid untuk aplikasi yang mengutamakan SEO dan performance! 🚀
+Pada arsetektur ini, fokus utama ada di sisi server. Sedangkan client/browser bahkan hanya HTML dan CSS saja, tanpa JavaScript.
