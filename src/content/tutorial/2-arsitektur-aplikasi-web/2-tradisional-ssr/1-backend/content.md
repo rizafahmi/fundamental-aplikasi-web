@@ -3,7 +3,7 @@ type: lesson
 title: Backend
 ---
 
-<video src="/public/statis.m4v" autoplay loop muted></video>
+<video src="/public/ssr.m4v" autoplay loop muted></video>
 
 # Backend
 
