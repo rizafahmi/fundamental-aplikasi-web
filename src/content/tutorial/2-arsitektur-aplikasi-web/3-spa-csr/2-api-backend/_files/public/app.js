@@ -20,20 +20,7 @@ form.addEventListener("submit", async function (event) {
       category: category.value,
       id: Date.now(),
     };
-    console.log(newNote);
-
-    // Save data
-    try {
-      await fetch("/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newNote),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    saveNote(newNote);
 
     // Clear Form
     title.value = "";
@@ -57,6 +44,21 @@ async function getNotes() {
   const notes = await res.json();
   console.log(notes);
   return notes;
+}
+
+async function saveNote(note) {
+  // Save data
+  try {
+    await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function renderNotes(data) {

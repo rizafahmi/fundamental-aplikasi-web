@@ -12,19 +12,6 @@ let NOTES = [];
 
 const app = new H3();
 
-function noteComponent({ title, note }) {
-  return `<div class="note">
-    <h2 class="note__title">${title}</h2>
-    <p class="note__body">
-      ${note}
-    </p>
-    <div class="note__actions">
-      <button class="note__btn note__view">View Detail</button>
-      <button class="note__btn note__delete">Delete Note</button>
-    </div>
-  </div>`;
-}
-
 // Serve static files from templates directory
 app.use("/**", staticFilesHandler);
 
@@ -35,12 +22,7 @@ app.get("/", async (event) => {
     "utf-8",
   );
 
-  // Replace placeholders in template
-  const notesHTML = NOTES.map((note) => noteComponent(note)).join("");
-
-  const renderedHTML = template.replace("{{NOTES}}", notesHTML);
-
-  return html(event, renderedHTML);
+  return html(event, template);
 });
 
 app.post("/", async (event) => {
