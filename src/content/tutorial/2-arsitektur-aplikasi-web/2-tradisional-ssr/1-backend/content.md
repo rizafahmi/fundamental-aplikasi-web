@@ -1,6 +1,7 @@
 ---
 type: lesson
 title: Backend
+focus: /server.js
 ---
 
 <video src="/public/ssr.m4v" autoplay loop muted></video>
@@ -42,14 +43,26 @@ server.on("request", (request, res) => {
 server.listen(3000);
 ```
 
+Jalanan server.
+
+```shell
+node --watch server.js
+```
+
+Buka di browser http://localhost:3000/
+
 ### Template Rendering
 
-Berikut adalah contoh rendering file `index.html` yang kita punya sebelumnya.
+Berikut adalah contoh rendering file `index.html` yang kita punya sebelumnya. Pindahkan ke sebuah folder, `templates/index.html` misalnya.
 
 ```javascript
 import http from "http";
 import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Create a local server to receive data from
 const server = http.createServer();
@@ -70,12 +83,16 @@ server.listen(3000);
 
 Jika ingin template yang dinamis, kita bisa menggunakan template engine seperti [EJS](https://ejs.co/), [Handlebars](https://handlebarsjs.com/) atau [Nunjucks](https://mozilla.github.io/nunjucks/).
 
-### Routing Library
+### Routing
 
 ```javascript
 import http from "http";
 import { readFile } from "fs/promises";
+import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Create a local server to receive data from
 const server = http.createServer();
@@ -91,7 +108,7 @@ server.on("request", async (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(template);
   } else {
-    console.error(`${url} is 404!`);
+    console.error(`${req.url} is 404!`);
     res.writeHead(404);
     res.end();
   }
@@ -102,7 +119,7 @@ server.listen(3000);
 
 ### Assets Management
 
-File statis seperti css, javascript, gambar dan file statis lainnya juga perlu ditangani oleh web server.
+File statis seperti css, javascript, gambar dan file statis lainnya juga perlu ditangani oleh web server. Pindahkan semua file statis ke folder lain seperti `public/app.js` dan `public/style.css`.
 
 ```javascript
 import http from "http";
@@ -172,6 +189,44 @@ Umumnya, dengan menggunakan web framework seperti Express, Hono, H3 dan lainnya,
 
 [H3](https://h3.dev/) menarik karena cepat, ringan, dan ringkas. H3 sangat dekat dengan web standards sehingga lebih mudah dijalankan dengan berbagai runtime JavaScript seperti Node, Deno, Bun dan yang lainnya.
 
+#### Setup
+
+Lakukan npm init untuk menandai proyek sebagai proyek nodejs.
+
+```shell
+npm init -y
+```
+
+Lalu instalasi h3
+
+```shell
+npm install h3@beta
+```
+
+Buka `package.json`, tambahkan `"type": "module"` agar dapat menggunakan ESModule (import).
+
+```json
+{
+  "name": "fundamental-aplikasi-web-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "h3": "^2.0.0-beta.5"
+  }
+}
+```
+
+Ubah kode server agar menggunakan h3.
+
 ```javascript
 import { H3, serve, html, readBody } from "h3";
 import { readFile } from "fs/promises";
@@ -201,6 +256,40 @@ app.get("/", async (event) => {
 serve(app, { port: 3000 });
 
 console.log("Server running on http://localhost:3000");
+```
+
+Buat file untuk menangani file statis di `lib/static.js`.
+
+```javascript
+import { serveStatic } from "h3";
+import { stat } from "fs/promises";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { readFile } from "fs/promises";
+
+export function staticFilesHandler(event) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const url = event.node.req.url;
+
+  // Only serve specific static files
+  if (url.endsWith(".js") || url.endsWith(".css")) {
+    return serveStatic(event, {
+      getContents: (id) => readFile(join(__dirname, "../", "public", id)),
+      getMeta: async (id) => {
+        const stats = await stat(join(__dirname, "../", "public", id)).catch(
+          () => {},
+        );
+        if (stats?.isFile()) {
+          return {
+            size: stats.size,
+            mtime: stats.mtimeMs,
+          };
+        }
+      },
+    });
+  }
+}
 ```
 
 ### Web Server untuk Aplikasi Catatan
@@ -327,19 +416,6 @@ const __dirname = dirname(__filename);
 + let NOTES = [];
 
 const app = new H3();
-
-function noteComponent({ title, note }) {
-  return `<div class="note">
-    <h2 class="note__title">${title}</h2>
-    <p class="note__body">
-      ${note}
-    </p>
-    <div class="note__actions">
-      <button class="note__btn note__view">View Detail</button>
-      <button class="note__btn note__delete">Delete Note</button>
-    </div>
-  </div>`;
-}
 
 // Serve static files from templates directory
 app.use("/**", staticFilesHandler);
