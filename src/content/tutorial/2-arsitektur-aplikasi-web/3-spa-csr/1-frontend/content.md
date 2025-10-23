@@ -1,6 +1,7 @@
 ---
 type: lesson
 title: Frontend dalam SPA - Client-Side Rendering
+focus: /public/app.js
 ---
 
 <video src="/public/csr.m4v" autoplay loop muted></video>
@@ -82,6 +83,12 @@ function noteComponent({ title, note }) {
 }
 ```
 
+Dan di `public/index.html` bagian menampilkan notes diubah agar rendering di sisi client, bukan lagi menggunakan string replace seperti sebelumnya.
+
+```html
+<div class="notes" id="notes"></div>
+```
+
 ## API Communication
 
 ```javascript
@@ -100,7 +107,7 @@ async function getNotes() {
 async function saveNote(note) {
   // Save data
   try {
-    await fetch("/", {
+    await fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
