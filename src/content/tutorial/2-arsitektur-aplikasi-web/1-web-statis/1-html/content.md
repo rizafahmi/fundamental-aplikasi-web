@@ -31,11 +31,9 @@ HTML, bersama CSS dan juga JavaScript berevolusi dari [dokumen bertaut](https://
 Setiap dokumen HTML memiliki struktur dasar:
 
 ```html
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Judul Halaman</title>
   </head>
   <body>
@@ -119,7 +117,7 @@ Berikut beberapa elemen HTML yang kita gunakan untuk mulai membangun struktur ap
 
 Tambahkan paragraf, teks atau beberapa judul.
 
-```diff
+```javascript
 <!doctype html>
 <html>
   <head>
@@ -127,8 +125,8 @@ Tambahkan paragraf, teks atau beberapa judul.
   </head>
   <body>
     <main class="container">
-+       <h1>Catatan</h1>
-+       <h3>Buat catatan baru</h3>
+       <h1>Catatan</h1>
+       <h3>Buat catatan baru</h3>
     </main>
     <footer>&copy; 2025 Made with love for Domainesia</footer>
   </body>
@@ -139,7 +137,7 @@ Tambahkan paragraf, teks atau beberapa judul.
 
 Kemudian tambahkan form, beberapa input teks beserta label dan button.
 
-```diff
+```javascript
 <!doctype html>
 <html>
   <head>
@@ -149,39 +147,39 @@ Kemudian tambahkan form, beberapa input teks beserta label dan button.
     <main class="container">
       <h1>Catatan</h1>
       <h3>Buat catatan baru</h3>
-+     <form>
-+       <label for="title"
-+         >Judul
-+         <input
-+           type="text"
-+           name="title"
-+           id="title"
-+           placeholder="Judul catatan"
-+           required
-+         />
-+       </label>
-+       <label for="note"
-+         >Catatan
-+         <textarea
-+           name="note"
-+           id="note"
-+           cols="30"
-+           rows="10"
-+           placeholder="Tulis catatan kamu disini..."
-+           required
-+         ></textarea>
-+       </label>
-+       <label for="category"
-+         >Kategori
-+         <select name="category" id="category" required>
-+           <option value="">-- Pilih Kategori --</option>
-+           <option value="personal">Pribadi</option>
-+           <option value="work">Kerjaan</option>
-+           <option value="other">Lainnya</option>
-+         </select>
-+       </label>
-+       <button type="submit">Simpan</button>
-+     </form>
+      <form>
+        <label for="title"
+        >Judul
+          <input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Judul catatan"
+          required
+          />
+        </label>
+        <label for="note"
+        >Catatan
+          <textarea
+            name="note"
+            id="note"
+            cols="30"
+            rows="10"
+            placeholder="Tulis catatan kamu disini..."
+            required
+          ></textarea>
+        </label>
+        <label for="category"
+        >Kategori
+          <select name="category" id="category" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="personal">Pribadi</option>
+            <option value="work">Kerjaan</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </label>
+        <button type="submit">Simpan</button>
+      </form>
     </main>
     <footer>&copy; 2025 Made with love for Domainesia</footer>
   </body>
