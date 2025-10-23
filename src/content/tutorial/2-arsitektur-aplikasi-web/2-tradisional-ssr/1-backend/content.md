@@ -494,4 +494,4 @@ app.get("/", async (event) => {
 
 ## Kesimpulan
 
-Pada arsetektur ini, fokus utama ada di sisi server. Sedangkan client/browser bahkan hanya HTML dan CSS saja, tanpa JavaScript.
+Pada arsitektur ini, fokus utama ada di sisi server. Sedangkan client/browser bahkan hanya HTML dan CSS saja, tanpa JavaScript.
