@@ -45,6 +45,10 @@ JavaScript adalah bahasa pemrograman yang:
 
 ```javascript
 // script.js
+save_button.addEventListener("click", function () {
+  sayHello("JavaScript!");
+});
+
 function sayHello(name) {
   alert(`Halo ${name}!`);
 }
