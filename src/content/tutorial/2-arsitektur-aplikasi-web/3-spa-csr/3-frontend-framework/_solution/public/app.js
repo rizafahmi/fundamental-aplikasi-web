@@ -16,13 +16,7 @@ createApp({
   methods: {
     async getNotes() {
       try {
-        const res = await fetch("/api", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const notes = await res.json();
+        const notes = await getNotes();
         this.notes = notes;
         console.log("Notes loaded:", notes);
       } catch (error) {
@@ -42,27 +36,16 @@ createApp({
 
       console.log("Saving note:", newNote);
 
-      try {
-        await fetch("/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newNote),
-        });
+      await saveNote(newNote);
 
-        // Clear form
-        this.form.title = "";
-        this.form.note = "";
-        this.form.category = "";
+      // Clear form
+      this.form.title = "";
+      this.form.note = "";
+      this.form.category = "";
 
-        // Reload notes
-        await this.getNotes();
-      } catch (error) {
-        console.error("Error saving note:", error);
-      } finally {
-        this.isSaving = false;
-      }
+      // Reload notes
+      await this.getNotes();
+      this.isSaving = false;
     },
   },
 
@@ -71,3 +54,30 @@ createApp({
     await this.getNotes();
   },
 }).mount("#app");
+
+async function getNotes() {
+  const res = await fetch("/api", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const notes = await res.json();
+  console.log(notes);
+  return notes;
+}
+
+async function saveNote(note) {
+  // Save data
+  try {
+    await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
