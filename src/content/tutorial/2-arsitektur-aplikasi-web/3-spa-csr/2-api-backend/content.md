@@ -38,18 +38,6 @@ app.get("/", async (event) => {
   return html(event, template);
 });
 
-app.post("/", async (event) => {
-  const data = await readBody(event);
-  NOTES = NOTES.concat(data);
-
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: "/",
-    },
-  });
-});
-
 serve(app, { port: 3000 });
 
 console.log("Server running on http://localhost:3000");
