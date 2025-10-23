@@ -16,7 +16,7 @@ Cukup sematkan script dari CDN. Vue juga tidak membutuhkan transpilasi, build st
 
 Lalu tambahkan sebuah `<div id="app">` sebagai tempat untuk vue melakukan rendering.
 
-```diff
+```html
 <!doctype html>
 <html>
   <head>
@@ -24,7 +24,7 @@ Lalu tambahkan sebuah `<div id="app">` sebagai tempat untuk vue melakukan render
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-+   <div id="app" style="display: contents">
+    <div id="app" style="display: contents">
       <main class="container">
         <h1>Catatan</h1>
         <h3>Buat catatan baru</h3>
@@ -83,12 +83,12 @@ Lalu tambahkan sebuah `<div id="app">` sebagai tempat untuk vue melakukan render
               </button>
             </div>
           </div>
-       </div>
+        </div>
       </aside>
       <footer>&copy; 2025 Made with love for Domainesia</footer>
-+   </div>
+    </div>
 
-+   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>
