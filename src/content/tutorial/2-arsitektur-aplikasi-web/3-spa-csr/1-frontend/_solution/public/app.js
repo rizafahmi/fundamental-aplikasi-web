@@ -49,7 +49,7 @@ async function getNotes() {
 async function saveNote(note) {
   // Save data
   try {
-    await fetch("/", {
+    await fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
