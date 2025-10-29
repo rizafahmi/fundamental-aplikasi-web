@@ -4,7 +4,7 @@ title: Frontend dalam SPA - Client-Side Rendering
 focus: /public/app.js
 ---
 
-<video src="/public/csr.m4v" autoplay loop muted></video>
+<video src="/csr.m4v" autoplay loop muted></video>
 
 Single Page Application (SPA) menggunakan Client-Side Rendering (CSR) sehingga frontend bertanggung jawab penuh untuk rendering UI, routing, dan state management. Semua logika presentasi berjalan di browser menggunakan JavaScript.
 

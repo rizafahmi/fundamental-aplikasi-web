@@ -4,7 +4,7 @@ title: HTML - Struktur Dasar Web
 focus: /index.html
 ---
 
-<video src="/public/statis.m4v" autoplay loop muted></video>
+<video src="/statis.m4v" autoplay loop muted></video>
 
 # HTML: Fondasi Struktur Web
 
@@ -20,11 +20,11 @@ HTML menggunakan sistem **tag** untuk mendefinisikan elemen-elemen dalam halaman
 
 HTML, bersama CSS dan juga JavaScript berevolusi dari [dokumen bertaut](https://home.cern/science/computing/birth-web) → [website](https://www.howtogeek.com/692445/remembering-geocities-the-1990s-precursor-to-social-media/) → [platform aplikasi](https://www.youtube.com/playlist?list=PLTY2nW4jwtG8Sx2Bw6QShC271PzX31CtT). Saat ini html sudah mencapai versi 5 dengan banyak fitur-fitur menarik. Sedangkan CSS saat ini sudah mencapai versi ketiga.
 
-![Halaman web perdana](/public/dokumen.png)
+![Halaman web perdana](/dokumen.png)
 
-![Website geocities](/public/geocities.png)
+![Website geocities](/geocities.png)
 
-![contoh aplikasi web](/public/youtube.png)
+![contoh aplikasi web](/youtube.png)
 
 ## Struktur Dasar HTML
 
@@ -96,7 +96,7 @@ HTML adalah fondasi yang kokoh - kuasai dengan baik sebelum melanjutkan ke tekno
 
 Berikut beberapa elemen HTML yang kita gunakan untuk mulai membangun struktur aplikasi catatan sederhana yang akan kita kembangkan sepanjang webinar ini.
 
-![Aplikasi Catatan Sederhana](/public/localhost_3000_.png)
+![Aplikasi Catatan Sederhana](/localhost_3000_.png)
 
 ### Struktur dasar
 

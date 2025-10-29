@@ -4,7 +4,7 @@ title: Backend
 focus: /server.js
 ---
 
-<video src="/public/ssr.m4v" autoplay loop muted></video>
+<video src="/ssr.m4v" autoplay loop muted></video>
 
 # Backend
 

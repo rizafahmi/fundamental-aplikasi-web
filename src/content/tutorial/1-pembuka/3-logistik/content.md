@@ -10,7 +10,7 @@ previews: false
 
 Sebelum kita memulai materi utama, mari kita bahas beberapa hal penting tentang logistik dari webinar kali ini.
 
-![](public/tutorialkit.png)
+![](/tutorialkit.png)
 
 ## Kebutuhan Teknis
 
@@ -24,9 +24,9 @@ Untuk mengikuti webinar dengan optimal, pastikan teman-teman memiliki:
 Jika ingin mencoba di komputer masing-masing, unduh kode dari [stackblitz](https://stackblitz.com/), lalu ekstrak hasilnya dan meju ke folder tujuan ekstraksi tadi. Jalankan perintah sesuai instruksi. Contoh:
 
 Tekan tombol ⚡ untuk menuju online IDE Stackblitz
-![TutorialKit](/public/tutorialkit.png)
+![TutorialKit](/tutorialkit.png)
 
-![StackBlitz](/public/stackblitz.png)
+![StackBlitz](/stackblitz.png)
 
 Lalu tekan tombol 🌩️ untuk mengunduh kode dan simpan ke sebuah folder.
 

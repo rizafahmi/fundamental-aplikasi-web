@@ -41,4 +41,4 @@ Di akhir sesi, diharapkan teman-teman mampu:
 
 Sepanjang webinar ini, kita akan membangun sebuah aplikasi catatan sederhana yang memungkinkan pengguna untuk membuat, dan melihat catatan mereka.
 
-<img src="/public/localhost_3000_.png" alt="Aplikasi Catatan Sederhana" style="width: 1000px">
+<img src="/localhost_3000_.png" alt="Aplikasi Catatan Sederhana" style="width: 1000px">
