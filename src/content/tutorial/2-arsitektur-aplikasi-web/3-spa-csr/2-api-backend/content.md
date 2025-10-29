@@ -35,7 +35,10 @@ app.get("/", async (event) => {
     "utf-8",
   );
 
-  return html(event, template);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return template;
 });
 
 serve(app, { port: 3000 });

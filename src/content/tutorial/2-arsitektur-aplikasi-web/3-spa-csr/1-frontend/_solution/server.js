@@ -40,7 +40,10 @@ app.get("/", async (event) => {
 
   const renderedHTML = template.replace("{{NOTES}}", notesHTML);
 
-  return html(event, renderedHTML);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return renderedHTML;
 });
 
 app.post("/", async (event) => {
