@@ -250,7 +250,10 @@ app.get("/", async (event) => {
     "utf-8",
   );
 
-  return html(event, template);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return template;
 });
 
 serve(app, { port: 3000 });
@@ -380,7 +383,10 @@ app.get("/", async (event) => {
     "utf-8",
   );
 
-  return html(event, template);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return template;
 });
 
 app.post("/", async (event) => {
@@ -427,7 +433,10 @@ app.get("/", async (event) => {
     "utf-8",
   );
 
-  return html(event, template);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return template
 });
 
 app.post("/", async (event) => {
@@ -488,7 +497,10 @@ app.get("/", async (event) => {
 
   const renderedHTML = template.replace("{{NOTES}}", notesHTML);
 
-  return html(event, renderedHTML);
+  event.res.status = 200;
+  event.res.statusText = "OK";
+  event.res.headers.set("Content-Type", "text/html");
+  return renderedHTML;
 });
 ```
 
