@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Aplikasi Catatan</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Catatan</h1>
+      <h3>Buat catatan baru</h3>
+      <form id="form" action="/" method="POST">
+        <label for="title"
+          >Judul
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Judul catatan"
+            required
+          />
+        </label>
+        <label for="note"
+          >Catatan
+          <textarea
+            name="note"
+            id="note"
+            cols="30"
+            rows="10"
+            placeholder="Tulis catatan kamu disini..."
+            required
+          ></textarea>
+        </label>
+        <label for="category"
+          >Kategori
+          <select name="category" id="category" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="personal">Pribadi</option>
+            <option value="work">Kerjaan</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </label>
+
+        <button type="submit" id="save_button">Simpan</button>
+      </form>
+    </main>
+    <aside>
+      <h3>Catatan</h3>
+      <div class="notes">{{NOTES}}</div>
+    </aside>
+    <script src="/app.js"></script>
+    <footer>&copy; 2025 Made with love for Domainesia</footer>
+  </body>
+</html>

@@ -12,6 +12,9 @@ let NOTES = [];
 
 const app = new H3();
 
+// Serve static files from templates directory
+app.use("/**", staticFilesHandler);
+
 function noteComponent({ title, note }) {
   return `<div class="note">
     <h2 class="note__title">${title}</h2>
@@ -24,9 +27,6 @@ function noteComponent({ title, note }) {
     </div>
   </div>`;
 }
-
-// Serve static files from templates directory
-app.use("/**", staticFilesHandler);
 
 // Serve the main HTML page
 app.get("/", async (event) => {
